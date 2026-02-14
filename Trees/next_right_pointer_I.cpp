@@ -35,7 +35,9 @@
 */
 
 #include<iostream>
+#include<queue>
 
+using namespace std;
 class Node {
     public:
         int val;
@@ -51,5 +53,47 @@ class Node {
 };
 
 Node* connect(Node* root) {
-            
+    if(!root){
+        return root;
+    }
+    queue<Node *> q;
+    q.push(root);
+    while(!q.empty()){
+        int sz = q.size();
+        Node *prevNode = nullptr;
+        for(int i = 0; i<sz; i++){
+            Node* cur = q.front();
+            q.pop();
+            if(prevNode){
+                prevNode->next = cur;
+            }
+            prevNode = cur;
+            if(cur->left){
+                q.push(cur->left);
+            }
+            if(cur->right){
+                q.push(cur->right);
+            }
+        }
+    }
+    return root;
+}
+
+Node* connectNoExtraSpace(Node *root){
+    if(!root){
+        return root;
+    }
+    Node *prev = root, *cur;
+    while(prev){
+        cur = prev;
+        while(cur && cur->left){
+            cur->left->next = cur->right;
+            if(cur->next){
+                cur->right->next = cur->next->left;
+            }
+            cur = cur->next;
+        }
+        prev = prev->left;
+    }
+    return root;
 }
