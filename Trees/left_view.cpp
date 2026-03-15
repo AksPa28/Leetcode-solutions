@@ -11,11 +11,26 @@ using namespace std;
 
 vector<int> leftSideView(TreeNode *root){
     queue<TreeNode *> q;
+    vector<int> leftView;
+    if(!root){
+        return leftView;
+    }
     q.push(root);
     while(!q.empty()){
         int sz = q.size();
         for(int i = 0; i<sz; i++){
             TreeNode *cur = q.front();
+            if(i == 0){
+                leftView.push_back(cur->val);
+            }
+            q.pop();
+            if(cur->left){
+                q.push(cur->left);
+            }
+            if(cur->right){
+                q.push(cur->right);
+            }
         }
     }
+    return leftView;
 }
